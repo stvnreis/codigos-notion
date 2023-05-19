@@ -38,6 +38,17 @@ int inserir(noArvore **no, int valor)
 	}
 }
 
+void ler_chaves(noArvore **no, int tamanho)
+{
+	int i, valor;
+	
+	for(i=0; i<tamanho; i++)
+	{
+		scanf("%d", &valor);
+		inserir(&(*no), valor);
+	}
+}
+
 void pre_ordem(noArvore **no)
 {
 	if((*no) != NULL)
@@ -48,15 +59,63 @@ void pre_ordem(noArvore **no)
 	}
 }
 
+void print_arvore(noArvore **no, int ordem)
+{
+	system("cls");
+	if(ordem == 1)
+	{
+		printf("Arvore em pre-ordem:\n");
+		pre_ordem(&(*no));
+	}
+	else if(ordem == 2)
+	{
+		
+	}
+	else if(ordem == 3)
+	{
+		
+	}
+	else
+	{
+		printf("Ordem nao encontrada!\n");
+	}
+}
+
+int escolher_ordem()
+{
+	int ordem;
+	
+	printf("ESCOLHA A ORDEM QUE DESEJA IMPRIMIR A ARVORE\n");
+	printf("PRE-ORDEM 	(1)\n");
+	printf("ORDEM 		(2)\n");
+	printf("POS-ORDEM 	(3)\n");
+	
+	scanf("%d", &ordem);
+	
+	return ordem;
+}
+
+int escolher_tamanho()
+{
+	int tamanho;
+	system("cls");
+	printf("QUANTOS ELEMENTOS DEVE TER A ARVORE?\n");
+	scanf("%d", &tamanho);
+	
+	return tamanho;
+}
+
+
 int main()
 {
 	noArvore *raiz;
 	iniciar(&raiz);
 	
-	inserir(&raiz, 2);
-	inserir(&raiz, 1);
-	inserir(&raiz, 3);
+	int ordem = escolher_ordem();
+	int n = escolher_tamanho();
 	
-	pre_ordem(&raiz);
+	ler_chaves(&raiz, n);
+	print_arvore(&raiz, ordem);
+	
 	return 0;
 }
