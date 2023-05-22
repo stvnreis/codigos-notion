@@ -38,6 +38,68 @@ int inserir(noArvore **no, int valor)
 	}
 }
 
+int maior_elemento(noArvore **no)
+{
+	if((*no)->direita == NULL && (*no)->esquerda == NULL)
+	{
+		int valor = (*no)->valor;
+		free((*no));
+		(*no) = NULL;
+		return valor;
+	}
+	else 
+		maior_elemento(&(*no)->direita);
+}
+
+int remover(noArvore **no, int valor)
+{
+	if((*no) == NULL)
+		return 0;
+	if((*no)->valor > valor)
+		return remover(&(*no)->esquerda, valor);
+	else if((*no)->valor < valor)
+		return remover(&(*no)->direita, valor);
+	else if((*no)->valor == valor)
+	{
+		if((*no)->direita == NULL && (*no)->esquerda == NULL)
+		{
+			free((*no));
+			(*no) = NULL;
+		}
+		else if((*no)->direita == NULL && (*no)->esquerda != NULL)
+		{
+			(*no) = (*no)->esquerda;
+			free((*no)->esquerda);
+		}
+		else if((*no)->direita != NULL && (*no)->esquerda == NULL)
+		{
+			(*no) = (*no)->direita;
+			free((*no)->direita);
+		}
+		else 
+		{
+			(*no)->valor = maior_elemento(&(*no)->esquerda);
+		}
+
+		return 1;
+	}
+}
+
+int pesquisar(noArvore **no, int valor)
+{
+	if((*no) == NULL)
+		return 0;
+	else
+	{
+		if((*no)->valor == valor)
+			return 1;
+		else if((*no)->valor > valor)
+			return pesquisar(&(*no)->esquerda, valor);
+		else 
+			return pesquisar(&(*no)->direita, valor);
+	}
+}
+
 void ler_chaves(noArvore **no, int tamanho)
 {
 	int i, valor;
@@ -61,7 +123,7 @@ void pre_ordem(noArvore **no)
 
 void print_arvore(noArvore **no, int ordem)
 {
-	system("cls");
+	//system("cls");
 	if(ordem == 1)
 	{
 		printf("Arvore em pre-ordem:\n");
@@ -115,7 +177,13 @@ int main()
 	int n = escolher_tamanho();
 	
 	ler_chaves(&raiz, n);
+	int valor;
+
+	printf("Digite um valor a ser removido\n");
+	scanf("%d", &valor);
+
+	remover(&raiz, valor);
 	print_arvore(&raiz, ordem);
-	
+
 	return 0;
 }
